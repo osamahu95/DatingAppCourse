@@ -11,21 +11,20 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError(error => {
       if (error) {
+        const errorData = error.error;
         switch(error.status) {
           case 400:
-            if (error.error.errors) {
+            if (errorData?.errors) {
               const modelStateErrors = [];
-              for (const key in error.error.errors) {
-                if (error.error.errors[key]) {
-                  modelStateErrors.push(error.error.errors[key]);
+              for (const key in errorData?.errors) {
+                if (errorData?.errors[key]) {
+                  modelStateErrors.push(errorData?.errors[key]);
                 }
               }
-
               throw modelStateErrors.flat();
-              break;
+            }else {
+              toast.error(errorData);
             }
-
-            toast.error(error.error);
             break;
           case 401:
             toast.error('Unauthorized');
@@ -34,7 +33,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             router.navigateByUrl('/not-found');
             break;
           case 500:
-            const navigationExtras: NavigationExtras = { state: { error: error.error } };
+            const navigationExtras: NavigationExtras = { state: { error: errorData } };
             router.navigate(['/server-error'], navigationExtras);
             break;
           default:
