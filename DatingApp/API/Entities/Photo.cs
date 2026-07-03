@@ -7,6 +7,7 @@
         public string? PublicId { get; set; }
 
         // Navigation Property
-        public Member Member { get; set; }
+        public string MemberId { get; set; } = null!;
+        public Member Member { get; set; } = null!;
     }
 }
