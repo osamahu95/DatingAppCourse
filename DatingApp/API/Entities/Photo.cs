@@ -1,4 +1,6 @@
-﻿namespace API.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace API.Entities
 {
     public class Photo
     {
@@ -7,7 +9,9 @@
         public string? PublicId { get; set; }
 
         // Navigation Property
+        [JsonIgnore]
         public string MemberId { get; set; } = null!;
+        [JsonIgnore]
         public Member Member { get; set; } = null!;
     }
 }
