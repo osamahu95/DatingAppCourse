@@ -20,6 +20,7 @@ builder.Services.AddDbContext<AppDbContext>(option =>
 builder.Services.AddCors();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IMemberRepository, MemberRepository>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -45,5 +46,20 @@ app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 app.MapControllers();
+
+// Create the database if not created, and migrate the data from json file if not exists.
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+try
+{
+    var context = services.GetRequiredService<AppDbContext>();
+    await context.Database.MigrateAsync();
+    await Seed.SeedUsers(context);
+}
+catch (Exception ex)
+{
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An Error Occured during migration");
+}
 
 app.Run();
