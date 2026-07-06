@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Text.Json.Serialization;
 
 namespace API.Entities
 {
@@ -16,6 +16,7 @@ namespace API.Entities
         public required string Country { get; set; }
 
         // Navigation Property
+        [JsonIgnore]
         public AppUser User { get; set; } = null!;
         public ICollection<Photo> Photos { get; set; } = [];
     }
