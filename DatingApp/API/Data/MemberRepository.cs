@@ -20,7 +20,7 @@ namespace API.Data
 
         public async Task<IReadOnlyList<Photo>> GetPhotosForMemberAsync(string memberId)
         {
-            return await context.Members.Include(m => m.Photos)
+            return await context.Members
                             .Where(x => x.Id == memberId)
                             .SelectMany(x => x.Photos)
                             .ToListAsync();
