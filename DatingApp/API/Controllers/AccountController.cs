@@ -39,7 +39,9 @@ namespace API.Controllers
         [HttpPost("login")] // api/account/login
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await context.Users.FirstOrDefaultAsync(x => x.Email == loginDto.Email);
+            var user = await context.Users
+                                    .Include(x => x.Member)
+                                    .FirstOrDefaultAsync(x => x.Email == loginDto.Email);
             if (user == null) return Unauthorized("Invalid Email Address");
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
