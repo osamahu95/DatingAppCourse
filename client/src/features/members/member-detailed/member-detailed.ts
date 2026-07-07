@@ -14,22 +14,22 @@ import { Member } from '../../../types/member';
   styleUrl: './member-detailed.css',
 })
 export class MemberDetailed implements OnInit{
-  private route = inject(ActivatedRoute);
+  private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   protected member = signal<Member | undefined>(undefined);
   protected title = signal<string | undefined>('Profile');
   
   ngOnInit(): void {
-    this.route.data.subscribe({
+    this.activatedRoute.data.subscribe({
       next: data => this.member.set(data['member'])
     });
 
-    this.title.set(this.route.firstChild?.snapshot?.title);
+    this.title.set(this.activatedRoute.firstChild?.snapshot?.title);
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe({
       next: () => {
-        this.title.set(this.route.firstChild?.snapshot?.title);
+        this.title.set(this.activatedRoute.firstChild?.snapshot?.title);
       }
     });
   }
