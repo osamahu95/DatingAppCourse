@@ -4,9 +4,6 @@
             @for (photo of photos; track photo.id) {
                 <img src="{{photo.url}}" alt="Photo of Member" class="w-full rounded-lg">
             }
-            @for (photo of photoMocks; track $index) {
-                <img src="{{photo.url}}" alt="Photo of Member" class="w-full rounded-lg">
-            }
         </div>
     }
 }

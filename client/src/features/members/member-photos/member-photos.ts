@@ -20,10 +20,4 @@ export class MemberPhotos {
     const memberId = this.activatedRoute.parent?.snapshot.paramMap.get('id');
     if (memberId) this.photos$ = this.memberService.getMemberPhotos(memberId);
   }
-
-  get photoMocks() {
-    return Array.from({length: 20}, (_, i) => ({
-      url: '/user.png'
-    }))
-  }
 }
