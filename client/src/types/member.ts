@@ -9,7 +9,7 @@ export interface Member {
   description?: string
   city: string
   country: string
-  photos: any[]
+  photos: Photo[]
 }
 
 export interface Photo {
