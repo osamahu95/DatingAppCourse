@@ -19,8 +19,6 @@ export class MemberProfile implements OnInit, OnDestroy{
       $event.preventDefault();
     }
   }
-  private activatedRoute = inject(ActivatedRoute);
-  protected member = signal<Member | undefined>(undefined);
   protected memberService = inject(MemberService);
   private toast = inject(ToastService);
   protected editableMember: EditableMember = {
@@ -31,15 +29,11 @@ export class MemberProfile implements OnInit, OnDestroy{
   };
 
   ngOnInit(): void {
-    this.activatedRoute.parent?.data.subscribe(data => {
-      this.member.set(data['member']);
-    });
-
     this.editableMember = {
-      displayName: this.member()?.displayName || '',
-      description: this.member()?.description || '',
-      city: this.member()?.city || '',
-      country: this.member()?.country || '',
+      displayName: this.memberService.member()?.displayName || '',
+      description: this.memberService.member()?.description || '',
+      city: this.memberService.member()?.city || '',
+      country: this.memberService.member()?.country || '',
     }
   }
 
@@ -50,13 +44,14 @@ export class MemberProfile implements OnInit, OnDestroy{
   }
 
   updateProfile() {
-    if (!this.member()) return;
+    if (!this.memberService.member()) return;
 
-    const updatedMember = {...this.member(), ...this.editableMember}
+    const updatedMember = {...this.memberService.member(), ...this.editableMember}
     this.memberService.updateMember(updatedMember).subscribe({
       next: () => {
         this.toast.success('Profile Updated Successfully');
         this.memberService.editMode.set(false);
+        this.memberService.member.set(updatedMember as Member);
         this.editForm?.reset(updatedMember);
       }
     });

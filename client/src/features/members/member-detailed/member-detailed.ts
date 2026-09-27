@@ -23,7 +23,6 @@ export class MemberDetailed implements OnInit{
   protected memberService = inject(MemberService);
   private accountService = inject(AccountService);
   private router = inject(Router);
-  protected member = signal<Member | undefined>(undefined);
   protected title = signal<string | undefined>('Profile');
   private destroyRef = inject(DestroyRef);
   protected isCurrentUser = computed(() => {
@@ -31,10 +30,6 @@ export class MemberDetailed implements OnInit{
   })
   
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe({
-      next: data => this.member.set(data['member'])
-    });
-
     this.title.set(this.activatedRoute.firstChild?.snapshot?.title);
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
