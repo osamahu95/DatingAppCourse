@@ -90,5 +90,26 @@ namespace API.Controllers
 
             return BadRequest("Problem adding Photo");
         }
+
+        [HttpPut("set-main-photo/{photoId}")]
+        public async Task<ActionResult> SetMainPhoto(int photoId)
+        {
+            var member = await membersRepository.GetMemberforUpdate(User.GetMemberId());
+
+            if (member == null) return BadRequest("Cannot get member from token");
+
+            var photo = member.Photos.SingleOrDefault(x => x.Id == photoId);
+
+            if (member.ImageUrl == photo?.Url || photo == null)
+            {
+                return BadRequest("Cannot set this as main Image");
+            }
+
+            member.ImageUrl = photo.Url;
+
+            if (await membersRepository.SaveAllAsync()) return NoContent();
+
+            return BadRequest("Problem setting main photo");
+        }
     }
 }
