@@ -34,6 +34,14 @@
                     formControlName="confirmPassword"
                     placeholder="Confirm Password">
             </label>
+
+            <div class="flex items-center justify-end gap-3">
+                <button type="button" class="btn" (click)="cancel()">Cancel</button>
+                <button 
+                    [disabled]="!registerForm.valid"
+                    type="submit" 
+                    class="btn btn-primary">Register</button>
+            </div>
         </form>
     </div>
 
