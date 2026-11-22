@@ -23,7 +23,10 @@ namespace API.Data
 
         public async Task<IReadOnlyList<Member>> GetMembersAsync()
         {
-            return await context.Members.ToListAsync();
+            var query = context.Members.AsQueryable();
+
+            return await context.Members
+                    .ToListAsync();
         }
 
         public async Task<IReadOnlyList<Photo>> GetPhotosForMemberAsync(string memberId)
