@@ -7,7 +7,7 @@ namespace API.Helpers
         public PaginationMetaData MetaData { get; set; } = default!;
         public List<T> Items { get; set; } = [];
 
-        public static async Task<PaginatedResult<T>> CreateAsync<T>(IQueryable<T> query, int pageNumber, int pageSize)
+        public static async Task<PaginatedResult<T>> CreateAsync(IQueryable<T> query, int pageNumber, int pageSize)
         {
             var count = await query.CountAsync();
             var items = await query

@@ -1,4 +1,5 @@
 ﻿using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,12 +22,11 @@ namespace API.Data
                             .SingleOrDefaultAsync(x => x.Id == Id);
         }
 
-        public async Task<IReadOnlyList<Member>> GetMembersAsync()
+        public async Task<PaginatedResult<Member>> GetMembersAsync(PagingParams pagingParams)
         {
             var query = context.Members.AsQueryable();
 
-            return await context.Members
-                    .ToListAsync();
+            return await PaginatedResult<Member>.CreateAsync(query, pagingParams.PageNumber, pagingParams.PageSize);
         }
 
         public async Task<IReadOnlyList<Photo>> GetPhotosForMemberAsync(string memberId)

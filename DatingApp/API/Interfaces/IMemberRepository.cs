@@ -1,4 +1,5 @@
 ﻿using API.Entities;
+using API.Helpers;
 
 namespace API.Interfaces
 {
@@ -6,7 +7,7 @@ namespace API.Interfaces
     {
         void Update(Member member);
         Task<bool> SaveAllAsync();
-        Task<IReadOnlyList<Member>> GetMembersAsync();
+        Task<PaginatedResult<Member>> GetMembersAsync(PagingParams pagingParams);
         Task<Member?> GetMemberByIdAsync(string Id);
         Task<IReadOnlyList<Photo>> GetPhotosForMemberAsync(string memberId);
         Task<Member?> GetMemberforUpdate(string Id);
